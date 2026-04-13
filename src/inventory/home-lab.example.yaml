@@ -1,0 +1,85 @@
+environment:
+  name: home-lab
+  domain: school.local
+  description: Codex-managed inventory for the home network and lab platform.
+
+hosts:
+  - name: COMMAND001
+    role: proxmox
+    address: 192.168.1.110
+    access:
+      ssh: true
+      ssh_user: root
+      proxmox_shell: true
+    notes:
+      - Physical Proxmox host
+      - SSH access verified as root
+      - Proxmox host access verified directly
+
+  - name: APP001
+    role: vm
+    vmid: 101
+    address: 192.168.1.200
+    access:
+      ssh: true
+    notes:
+      - Application VM
+      - proxmoxctl confirmed at /home/debian/bin/proxmoxctl
+
+  - name: WEB001
+    role: vm
+    vmid: 201
+    address: 192.168.1.210
+    access:
+      ssh: true
+    notes:
+      - Web VM
+
+  - name: SQL001
+    role: vm
+    vmid: 202
+    address: 192.168.1.202
+    access:
+      ssh: true
+      postgresql: true
+    notes:
+      - PostgreSQL access available for Home-School-Management
+      - PostgreSQL service verified active
+
+  - name: DNS001
+    role: vm
+    vmid: 203
+    address: 192.168.1.203
+    access:
+      ssh: true
+      dns: true
+    services:
+      - bind9
+    notes:
+      - Hosts the school.local zone
+      - bind9 service verified active
+
+  - name: NAS001
+    role: nas
+    model: LS210D
+    address: 192.168.1.50
+    access:
+      ssh: unknown
+      http: true
+    notes:
+      - Buffalo NAS
+      - HTTP interface reachable
+      - HTTPS check did not succeed
+      - SSH on port 22 refused connection during discovery
+
+  - name: GATEWAY001
+    role: gateway
+    model: Ubiquiti Cloud Gateway Ultra
+    address: 192.168.1.1
+    access:
+      https: true
+      api: planned
+    notes:
+      - UniFi OS interface reachable
+      - Model identified as UCG Ultra
+      - Target for future Codex API-based monitoring and configuration
