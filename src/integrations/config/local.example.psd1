@@ -18,10 +18,18 @@
         }
         Gateway001 = @{
             Address = '192.168.1.1'
+            Scheme = 'https'
+            ApiBasePath = '/proxy/network/integration'
+            Site = 'default'
         }
     }
 
     Paths = @{
         ProxmoxCtl = '/home/debian/bin/proxmoxctl'
+    }
+
+    UniFi = @{
+        ApiKeyEnvVar = 'UNIFI_API_KEY'
+        VerifyTls = $false
     }
 }

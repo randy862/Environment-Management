@@ -75,6 +75,7 @@ Read-only discovery was run on April 12, 2026 (America/Chicago) with these resul
 - `DNS001` is running `bind9` and has the `school.local` zone defined in `/etc/bind/named.conf.local` with `/etc/bind/db.school.local`.
 - `SQL001` reports PostgreSQL as active and has `psql` version `17.9`.
 - The Ubiquiti gateway at `192.168.1.1` is reachable over HTTPS and identifies as UniFi OS model `UCG Ultra`.
+- The official UniFi Network API is confirmed reachable with `X-API-KEY` authentication via `/proxy/network/integration/v1/sites`.
 - The Buffalo NAS at `192.168.1.50` is reachable over HTTP, HTTPS did not respond successfully, and SSH on port `22` refused connections during this pass.
 
 See `src/inventory/discovery-2026-04-12.md` for the detailed notes and follow-up items.
@@ -87,7 +88,7 @@ The repository now includes a first local probe layer in PowerShell for safe, re
 - Proxmox VM inventory via `APP001` and `/home/debian/bin/proxmoxctl`
 - DNS service and zone inspection on `DNS001`
 - PostgreSQL service inspection on `SQL001`
-- UniFi gateway HTTPS reachability and identity detection
+- UniFi gateway HTTPS reachability, site discovery, and device inventory via the official API-key flow
 
 To use it:
 
@@ -96,3 +97,5 @@ To use it:
 3. Run the probe scripts from `src/integrations/` as documented in `src/integrations/README.md`.
 
 The Proxmox probes now support structured output with `-OutputFormat Json`, which makes them suitable for later Codex-driven automation and inventory comparison workflows.
+
+The UniFi integration now targets the official Network API using the `X-API-KEY` request header and supports machine-readable JSON output for site and device discovery.
