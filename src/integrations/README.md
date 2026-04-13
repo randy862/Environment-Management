@@ -55,6 +55,15 @@ The preferred implementation order is read-only discovery first, then controlled
   - Calls the official UniFi interfaces endpoint for the resolved site.
   - Supports `-OutputFormat Text` and `-OutputFormat Json`.
 
+- `unifi/get-site-summary.ps1`
+  - Calls the known working UniFi site-level endpoints for devices, clients, and interfaces in one pass.
+  - Supports `-OutputFormat Text` and `-OutputFormat Json`.
+
+- `unifi/invoke-request.ps1`
+  - Generic UniFi API runner for additional official endpoints from the local UniFi docs.
+  - Supports `{siteId}` placeholder replacement via `-ResolveSitePlaceholders`.
+  - Supports `-OutputFormat Text` and `-OutputFormat Json`.
+
 ## Example Usage
 
 From the repository root in PowerShell:
@@ -74,6 +83,8 @@ powershell -ExecutionPolicy Bypass -File src\integrations\unifi\check-sites.ps1 
 powershell -ExecutionPolicy Bypass -File src\integrations\unifi\get-device-inventory.ps1 -OutputFormat Json
 powershell -ExecutionPolicy Bypass -File src\integrations\unifi\get-clients.ps1 -OutputFormat Json
 powershell -ExecutionPolicy Bypass -File src\integrations\unifi\get-interfaces.ps1 -OutputFormat Json
+powershell -ExecutionPolicy Bypass -File src\integrations\unifi\get-site-summary.ps1 -OutputFormat Json
+powershell -ExecutionPolicy Bypass -File src\integrations\unifi\invoke-request.ps1 -RelativePath 'v1/sites/{siteId}/devices' -ResolveSitePlaceholders -OutputFormat Json
 ```
 
 These probes are intentionally read-only and should be expanded with structured parsing before any higher-level automation is built on top of them.

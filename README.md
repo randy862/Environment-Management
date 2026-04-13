@@ -99,3 +99,4 @@ To use it:
 The Proxmox probes now support structured output with `-OutputFormat Json`, which makes them suitable for later Codex-driven automation and inventory comparison workflows.
 
 The UniFi integration now targets the official Network API using the `X-API-KEY` request header and supports machine-readable JSON output for site and device discovery.
+It also now includes broader read-only coverage for clients, interfaces, whole-site summaries, and a generic endpoint runner for additional official UniFi API paths.
