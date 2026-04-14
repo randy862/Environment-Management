@@ -30,6 +30,11 @@ The preferred implementation order is read-only discovery first, then controlled
 - `dns/check-zone.ps1`
   - Verifies `bind9` is active and searches for a zone reference on `DNS001`.
 
+- `health/check-platform.ps1`
+  - Runs a read-only platform sweep across Proxmox, DNS, PostgreSQL, and the web stack.
+  - Supports `-OutputFormat Text` and `-OutputFormat Json`.
+  - Exits non-zero when one or more checks fail, which makes it suitable for scheduled monitoring.
+
 - `postgres/check-service.ps1`
   - Verifies PostgreSQL service state and `psql` version on `SQL001`.
 
@@ -75,6 +80,7 @@ powershell -ExecutionPolicy Bypass -File src\integrations\proxmox\check-host.ps1
 powershell -ExecutionPolicy Bypass -File src\integrations\proxmox\read-vms.ps1 -OutputFormat Json
 powershell -ExecutionPolicy Bypass -File src\integrations\proxmox\check-host.ps1 -OutputFormat Json
 powershell -ExecutionPolicy Bypass -File src\integrations\dns\check-zone.ps1
+powershell -ExecutionPolicy Bypass -File src\integrations\health\check-platform.ps1
 powershell -ExecutionPolicy Bypass -File src\integrations\postgres\check-service.ps1
 powershell -ExecutionPolicy Bypass -File src\integrations\unifi\check-gateway.ps1
 powershell -ExecutionPolicy Bypass -File src\integrations\unifi\check-sites.ps1 -ShowPlanOnly

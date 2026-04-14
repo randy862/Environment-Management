@@ -32,4 +32,15 @@
         ApiKeyEnvVar = 'UNIFI_API_KEY'
         VerifyTls = $false
     }
+
+    Monitoring = @{
+        DnsNames = @(
+            'mitchell.school.local'
+            'web001.school.local'
+        )
+        WebHealthUrl = 'http://192.168.1.210/health'
+        WebControlUrl = 'http://192.168.1.210/control/'
+        DatabasePort = 5432
+        DnsPort = 53
+    }
 }
