@@ -28,6 +28,34 @@ This file captures the first stabilization pass after the Proxmox host reboot on
   - the system journal was replaced after an unclean shutdown
   - `/boot/efi` had its dirty bit set and required fsck cleanup
 - The current strongest hardware clue is a recorded machine-check event on the host CPU during the next boot.
+- `COMMAND001` crashed again on April 14, 2026.
+  - The current boot started at `2026-04-14 07:47:12` local time.
+  - `last -x` reports the prior boot that started on `2026-04-13 13:13` ended as `crash`.
+  - The strongest lead-up clue before the April 14 crash is a Broadcom `tg3` NIC failure at `2026-04-14 05:17:30`:
+    - `NETDEV WATCHDOG` transmit timeout on `nic0`
+    - repeated `tg3_stop_block timed out` messages
+    - `No firmware running`
+    - link down on the bridge uplink
+  - The host kernel also logged long clocksource watchdog intervals during the same event window.
+  - SMART on `/dev/sda` was healthy and did not show read or write error logs during the investigation.
+  - `rasdaemon` captured the NIC timeout as a devlink event but did not report new persistent memory or PCIe AER errors after it was enabled.
+
+## Containment Actions - 2026-04-14
+
+- UniFi DHCP was updated to hand out `8.8.8.8` as DNS so general internet access does not depend on `DNS001` staying online during a host crash.
+- `COMMAND001` network offloads were reduced on the active uplink `nic0` as a live-only mitigation:
+  - `tso off`
+  - `gso off`
+  - `gro off`
+- The production VMs were gracefully shut down to reduce exposure to another unclean host failure:
+  - `DNS001`
+  - `SQL001`
+  - `APP001`
+  - `WEB001`
+- All four production VMs remain configured with `onboot: 1`, so they will still auto-start if `COMMAND001` reboots unless that setting is changed later.
+- Planned next A/B test:
+  - move the `COMMAND001` uplink back from the UniFi built-in switch port to the legacy router switch path and observe whether the crash pattern stops
+  - keep other variables as stable as practical so the switch-path change is meaningful
 
 ## Immediate Priorities
 
@@ -67,3 +95,7 @@ powershell -ExecutionPolicy Bypass -File src\integrations\health\check-platform.
 - Run additional hardware diagnostics during a maintenance window.
 - Review the results of the running extended SMART test on `/dev/sda` after its completion time.
 - Schedule an offline memory test for `COMMAND001`.
+- Investigate the Broadcom BCM5762 `tg3` path on `COMMAND001`:
+  - reseat or replace cabling if practical
+  - consider disabling unused offload features or moving to an alternate NIC if one is available
+  - check whether the crash pattern stops when the backup share is temporarily disabled or the host uplink is changed

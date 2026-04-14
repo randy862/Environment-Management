@@ -1,5 +1,5 @@
 param(
-    [string]$ConfigPath = (Join-Path $rootDir 'config/local.psd1'),
+    [string]$ConfigPath,
     [ValidateSet('Text', 'Json')]
     [string]$OutputFormat = 'Text'
 )
