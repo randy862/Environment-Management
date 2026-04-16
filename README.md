@@ -100,3 +100,25 @@ The Proxmox probes now support structured output with `-OutputFormat Json`, whic
 
 The UniFi integration now targets the official Network API using the `X-API-KEY` request header and supports machine-readable JSON output for site and device discovery.
 It also now includes broader read-only coverage for clients, interfaces, whole-site summaries, and a generic endpoint runner for additional official UniFi API paths.
+
+## PostgreSQL Backups
+
+The repository now also includes a workstation-driven PostgreSQL backup workflow for `SQL001`.
+
+- It connects to `SQL001` over SSH.
+- It runs `pg_dumpall --globals-only` plus per-database `pg_dump --format=custom`.
+- It copies the backup artifacts to the configured target share.
+- The default target is `X:\SQLBackup` on this workstation, which maps to the NAS share.
+- Each run lands in a timestamped folder and writes a `manifest.json`.
+- Old run folders are pruned based on `Backups.Postgres.RetentionDays` in `src/integrations/config/local.psd1`.
+- The script should run in the same Windows user context that can already see the mapped backup drive.
+
+Typical usage:
+
+```powershell
+powershell -ExecutionPolicy Bypass -File src\integrations\postgres\backup-to-share.ps1 -ShowPlanOnly
+powershell -ExecutionPolicy Bypass -File src\integrations\postgres\backup-to-share.ps1
+powershell -ExecutionPolicy Bypass -File src\integrations\postgres\run-scheduled-backup.ps1
+```
+
+Scheduled runs write local logs under `src\integrations\tmp\postgres-backup\`.

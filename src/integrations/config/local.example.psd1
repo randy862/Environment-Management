@@ -43,4 +43,13 @@
         DatabasePort = 5432
         DnsPort = 53
     }
+
+    Backups = @{
+        Postgres = @{
+            TargetRoot = 'X:\SQLBackup'
+            RetentionDays = 14
+            CompressionLevel = 6
+            KeepDatabases = @()
+        }
+    }
 }

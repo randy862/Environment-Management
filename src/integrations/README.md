@@ -38,6 +38,15 @@ The preferred implementation order is read-only discovery first, then controlled
 - `postgres/check-service.ps1`
   - Verifies PostgreSQL service state and `psql` version on `SQL001`.
 
+- `postgres/backup-to-share.ps1`
+  - Creates PostgreSQL dumps on `SQL001`, copies them to the configured NAS share, writes a manifest, and prunes old run folders by retention.
+  - Supports `-ShowPlanOnly`, `-OutputFormat Text`, and `-OutputFormat Json`.
+  - The workstation account running the script must already be able to access the target mapped drive or SMB share.
+
+- `postgres/run-scheduled-backup.ps1`
+  - Wrapper for scheduled execution of the PostgreSQL backup job.
+  - Runs `backup-to-share.ps1`, writes a per-run log and JSON summary under `src/integrations/tmp/postgres-backup/`, and updates `latest.json`.
+
 - `unifi/check-gateway.ps1`
   - Fetches HTTPS headers and the landing page for the UniFi gateway.
 
@@ -82,6 +91,9 @@ powershell -ExecutionPolicy Bypass -File src\integrations\proxmox\check-host.ps1
 powershell -ExecutionPolicy Bypass -File src\integrations\dns\check-zone.ps1
 powershell -ExecutionPolicy Bypass -File src\integrations\health\check-platform.ps1
 powershell -ExecutionPolicy Bypass -File src\integrations\postgres\check-service.ps1
+powershell -ExecutionPolicy Bypass -File src\integrations\postgres\backup-to-share.ps1 -ShowPlanOnly
+powershell -ExecutionPolicy Bypass -File src\integrations\postgres\backup-to-share.ps1
+powershell -ExecutionPolicy Bypass -File src\integrations\postgres\run-scheduled-backup.ps1
 powershell -ExecutionPolicy Bypass -File src\integrations\unifi\check-gateway.ps1
 powershell -ExecutionPolicy Bypass -File src\integrations\unifi\check-sites.ps1 -ShowPlanOnly
 powershell -ExecutionPolicy Bypass -File src\integrations\unifi\get-device-inventory.ps1 -ShowPlanOnly
