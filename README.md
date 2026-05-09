@@ -80,6 +80,15 @@ Read-only discovery was run on April 12, 2026 (America/Chicago) with these resul
 
 See `src/inventory/discovery-2026-04-12.md` for the detailed notes and follow-up items.
 
+## Incident Journal
+
+The May 9, 2026 Proxmox host crash investigation is captured in `src/inventory/incident-2026-05-09-proxmox-nic.md`.
+
+- The strongest evidence pointed to the onboard Broadcom BCM5762 NIC using the `tg3` driver.
+- The host logs showed `NETDEV WATCHDOG`, `tg3` reset timeouts, `No firmware running`, and `nic0: Link is down`.
+- `COMMAND001` was upgraded from kernel `6.17.2-1-pve` to `7.0.2-2-pve`, with `pve-firmware` upgraded to `3.18-3`.
+- All active VMs were verified running after reboot.
+
 ## Read-Only Probe Layer
 
 The repository now includes a first local probe layer in PowerShell for safe, read-only checks:
