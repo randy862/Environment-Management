@@ -11,6 +11,13 @@ hosts:
       ssh: true
       ssh_user: root
       proxmox_shell: true
+    hardware:
+      vendor: Dell Inc.
+      model: OptiPlex 7060
+      cpu: Intel Core i7-8700
+      cpu_threads: 12
+      memory_installed_gb: 16
+      memory_reported_gib: 15
     notes:
       - Physical Proxmox host
       - SSH access verified as root
@@ -20,6 +27,9 @@ hosts:
     role: vm
     vmid: 101
     address: 192.168.1.200
+    resources:
+      vcpu: 4
+      memory_mb: 5120
     access:
       ssh: true
     notes:
@@ -30,6 +40,9 @@ hosts:
     role: vm
     vmid: 201
     address: 192.168.1.210
+    resources:
+      vcpu: 2
+      memory_mb: 3072
     access:
       ssh: true
     notes:
@@ -39,6 +52,9 @@ hosts:
     role: vm
     vmid: 202
     address: 192.168.1.202
+    resources:
+      vcpu: 6
+      memory_mb: 5120
     access:
       ssh: true
       postgresql: true
@@ -50,6 +66,9 @@ hosts:
     role: vm
     vmid: 203
     address: 192.168.1.203
+    resources:
+      vcpu: 1
+      memory_mb: 1024
     access:
       ssh: true
       dns: true

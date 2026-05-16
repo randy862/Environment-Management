@@ -25,6 +25,17 @@ This project is intended to become the single place where we define:
 | Buffalo NAS | NAS | `192.168.1.50` | Model `LS210D`, SSH appears enabled |
 | Ubiquiti Cloud Gateway Ultra | Network gateway | `192.168.1.1` | Desired API management target |
 
+### Current Proxmox Allocations
+
+After the May 16, 2026 post-migration resize on the replacement `COMMAND001` host:
+
+| VM | VMID | CPU | RAM |
+| --- | ---: | ---: | ---: |
+| APP001 | 101 | 4 vCPU | 5 GB |
+| WEB001 | 201 | 2 vCPU | 3 GB |
+| SQL001 | 202 | 6 vCPU | 5 GB |
+| DNS001 | 203 | 1 vCPU | 1 GB |
+
 ### Access and Service Notes
 
 - Public-key SSH access is established from this PC to `COMMAND001` and all four VMs.
@@ -88,6 +99,15 @@ The May 9, 2026 Proxmox host crash investigation is captured in `src/inventory/i
 - The host logs showed `NETDEV WATCHDOG`, `tg3` reset timeouts, `No firmware running`, and `nic0: Link is down`.
 - `COMMAND001` was upgraded from kernel `6.17.2-1-pve` to `7.0.2-2-pve`, with `pve-firmware` upgraded to `3.18-3`.
 - All active VMs were verified running after reboot.
+
+## Operations Journal
+
+The May 16, 2026 post-migration Proxmox resource resize is captured in `src/inventory/proxmox-resource-resize-2026-05-16.md`.
+
+- Replacement `COMMAND001` hardware was confirmed as a Dell OptiPlex 7060 with an Intel Core i7-8700, 12 CPU threads, and 15 GiB reported memory.
+- `APP001`, `WEB001`, and `SQL001` were resized and gracefully restarted in dependency order.
+- Final active allocations are `APP001` 4 vCPU / 5 GB, `WEB001` 2 vCPU / 3 GB, `SQL001` 6 vCPU / 5 GB, and `DNS001` 1 vCPU / 1 GB.
+- Proxmox reported no remaining pending VM resource changes after restart.
 
 ## Migration Runbooks
 
