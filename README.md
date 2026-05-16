@@ -89,6 +89,14 @@ The May 9, 2026 Proxmox host crash investigation is captured in `src/inventory/i
 - `COMMAND001` was upgraded from kernel `6.17.2-1-pve` to `7.0.2-2-pve`, with `pve-firmware` upgraded to `3.18-3`.
 - All active VMs were verified running after reboot.
 
+## Migration Runbooks
+
+The planned replacement of the current `COMMAND001` Proxmox hardware is captured in `src/inventory/proxmox-host-replacement-runbook.md`.
+
+- The target end state is for the new hardware to become `COMMAND001` at `192.168.1.110`.
+- The runbook uses NAS-backed VM backup restore instead of temporary clustering because the old host has NIC instability.
+- The restored VMs keep their existing IDs, hostnames, and IP addresses.
+
 ## Read-Only Probe Layer
 
 The repository now includes a first local probe layer in PowerShell for safe, read-only checks:
